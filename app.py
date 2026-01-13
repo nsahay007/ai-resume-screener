@@ -7,7 +7,12 @@ from docx import Document
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-nlp = spacy.load("en_core_web_sm")
+try:
+    nlp = spacy.load("en_core_web_sm")
+except:
+    from spacy.cli import download
+    download("en_core_web_sm")
+    nlp = spacy.load("en_core_web_sm")
 
 st.set_page_config(page_title="AI Resume Screener", layout="wide")
 
@@ -86,4 +91,5 @@ if st.button("Analyze"):
         st.dataframe(df, use_container_width=True)
 
         st.subheader("Top Candidate")
+
         st.success(df.iloc[0]["Candidate"])
